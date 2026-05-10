@@ -35,31 +35,35 @@ def package_root() -> Path:
 
 
 def bundled_skill_file() -> Path:
-    """Return the SKILL.md from the bundled mrm-toolkit directory.
-
-    The skill file lives inside the toolkit tree, not duplicated in the
-    Python package.  Falls back to the package-local path when the toolkit
-    directory is not found (e.g. editable installs during development).
-    """
+    """Return the SKILL.md from the bundled mrm-toolkit directory."""
     toolkit = bundled_toolkit_dir()
     if toolkit is not None:
         candidate = toolkit / "skills" / DEFAULT_SKILL_NAME / "SKILL.md"
         if candidate.is_file():
             return candidate
-    # Fallback: package-local copy (development / legacy layout)
-    return package_root() / "skills" / DEFAULT_SKILL_NAME / "SKILL.md"
+    # Fallback: check if we are in development and mrm-toolkit is at root
+    return package_root().parent / "mrm-toolkit" / "skills" / DEFAULT_SKILL_NAME / "SKILL.md"
 
 
 def bundled_toolkit_dir() -> Optional[Path]:
-    """Return the bundled toolkit path from a wheel or source checkout."""
-    packaged_toolkit = package_root() / TOOLKIT_DIR_NAME
+    """Return the bundled toolkit path from the package resources."""
+    # 1. Check inside package resources (standard installed layout)
+    packaged_toolkit = package_root() / "resources" / TOOLKIT_DIR_NAME
     if packaged_toolkit.is_dir():
         return packaged_toolkit
 
+    # 2. Fallback to legacy root-relative path (for development checkouts)
+    # This is useful when running from source before 'pip install -e .'
     for parent in package_root().parents:
         candidate = parent / TOOLKIT_DIR_NAME
         if candidate.is_dir():
             return candidate
+        
+        # Check resources/mrm-toolkit in parent if we are in a subfolder
+        candidate_res = parent / "mrm" / "resources" / TOOLKIT_DIR_NAME
+        if candidate_res.is_dir():
+            return candidate_res
+            
     return None
 
 

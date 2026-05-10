@@ -73,42 +73,68 @@ def _cmd_generate_index(args):
         print(f"❌ Lỗi khi sinh index: {e}")
         return 1
 
+def _cmd_count_lines(args):
+    validator = MRMValidator(verbose=not args.quiet)
+    try:
+        if not args.path.is_file():
+            print(f"❌ Đường dẫn không phải là file: {args.path}")
+            return 1
+        with open(args.path, "r", encoding="utf-8") as fh:
+            content = fh.read()
+        line_count = validator.count_content_lines(content)
+        print(f"📊 Số dòng nội dung: {line_count}/{validator.MAX_LINES}")
+        if line_count > validator.MAX_LINES:
+            print("⚠️  Vượt quá giới hạn! Cần tách file.")
+            return 1
+        print("✅ Đạt giới hạn dòng.")
+        return 0
+    except Exception as exc:
+        print(f"❌ Lỗi: {exc}")
+        return 1
+
 def main():
     parser = argparse.ArgumentParser(description="MRM Toolkit — Unified CLI")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
     # Validate
-    val_parser = subparsers.add_parser("validate", help="Validate MRM files or directory")
-    val_parser.add_argument("path", type=Path, help="Path to file or directory to validate")
-    val_parser.add_argument("--quiet", action="store_true", help="Minimize output")
+    val_parser = subparsers.add_parser("validate", help="Kiểm định file hoặc thư mục MRM")
+    val_parser.add_argument("path", type=Path, help="Đường dẫn file hoặc thư mục")
+    val_parser.add_argument("--quiet", action="store_true", help="Giảm thiểu output")
+
+    # Count Lines
+    cnt_parser = subparsers.add_parser("count-lines", help="Đếm số dòng nội dung của file")
+    cnt_parser.add_argument("path", type=Path, help="Đường dẫn file .md")
+    cnt_parser.add_argument("--quiet", action="store_true", help="Giảm thiểu output")
 
     # Install Skill
-    ins_parser = subparsers.add_parser("install-skill", help="Install Codex skill and toolkit")
-    ins_parser.add_argument("--target", type=Path, default=default_skills_dir(), help="Parent skills directory")
-    ins_parser.add_argument("--toolkit-target", type=Path, default=default_toolkit_dir(), help="MRM toolkit directory")
-    ins_parser.add_argument("--name", default=DEFAULT_SKILL_NAME, help="Skill folder name")
-    ins_parser.add_argument("--overwrite", action="store_true", help="Overwrite existing skill")
+    ins_parser = subparsers.add_parser("install-skill", help="Cài đặt Codex skill và toolkit")
+    ins_parser.add_argument("--target", type=Path, default=default_skills_dir(), help="Thư mục cha của skills")
+    ins_parser.add_argument("--toolkit-target", type=Path, default=default_toolkit_dir(), help="Thư mục cài toolkit")
+    ins_parser.add_argument("--name", default=DEFAULT_SKILL_NAME, help="Tên thư mục skill")
+    ins_parser.add_argument("--overwrite", action="store_true", help="Ghi đè nếu đã tồn tại")
 
     # Install Adapter
-    adp_parser = subparsers.add_parser("install-adapter", help="Install agent adapter")
-    adp_parser.add_argument("adapter", choices=sorted(ADAPTER_TARGETS), help="Target adapter")
-    adp_parser.add_argument("project_root", type=Path, help="Project root directory")
-    adp_parser.add_argument("--overwrite", action="store_true", help="Overwrite existing adapter")
+    adp_parser = subparsers.add_parser("install-adapter", help="Cài đặt agent adapter")
+    adp_parser.add_argument("adapter", choices=sorted(ADAPTER_TARGETS), help="Loại adapter")
+    adp_parser.add_argument("project_root", type=Path, help="Thư mục gốc của project")
+    adp_parser.add_argument("--overwrite", action="store_true", help="Ghi đè nếu đã tồn tại")
 
     # Assemble
-    asm_parser = subparsers.add_parser("assemble", help="Assemble modules into a report")
-    asm_parser.add_argument("input_dir", type=Path, help="Directory containing modules")
-    asm_parser.add_argument("output_path", type=Path, help="Path to final report")
+    asm_parser = subparsers.add_parser("assemble", help="Ghép các module thành báo cáo hoàn chỉnh")
+    asm_parser.add_argument("input_dir", type=Path, help="Thư mục chứa các module")
+    asm_parser.add_argument("output_path", type=Path, help="Đường dẫn file báo cáo đầu ra")
 
     # Generate Index
-    idx_parser = subparsers.add_parser("generate-index", help="Generate index.md for modules")
-    idx_parser.add_argument("directory", type=Path, help="Directory to index")
-    idx_parser.add_argument("--output", type=Path, help="Optional output path")
+    idx_parser = subparsers.add_parser("generate-index", help="Sinh file index.md cho thư mục module")
+    idx_parser.add_argument("directory", type=Path, help="Thư mục cần đánh chỉ mục")
+    idx_parser.add_argument("--output", type=Path, help="Đường dẫn file đầu ra (tùy chọn)")
 
     args = parser.parse_args()
 
     if args.command == "validate":
         sys.exit(_cmd_validate(args))
+    elif args.command == "count-lines":
+        sys.exit(_cmd_count_lines(args))
     elif args.command == "install-skill":
         sys.exit(_cmd_install_skill(args))
     elif args.command == "install-adapter":
