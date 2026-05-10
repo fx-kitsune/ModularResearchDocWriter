@@ -57,6 +57,8 @@ commands:
   generate_index: python mrm-toolkit/scripts/mrm_validator.py generate-index <research_dir>
   assemble: python mrm-toolkit/scripts/mrm_validator.py assemble <research_dir> <output.md>
   install_adapter: python mrm-toolkit/scripts/mrm_validator.py install-adapter <adapter> <project_root>
+  install_skill_sh: scripts/install-skill.sh [skills_dir] [pip_source]
+  install_skill_powershell: ./scripts/install-skill.ps1 [[-SkillsDir] <path>] [[-PipSource] <path-or-pip-url>] [-Overwrite]
 
 quality_gates:
   max_content_lines: 300

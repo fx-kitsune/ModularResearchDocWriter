@@ -50,6 +50,22 @@ mrm-toolkit/
 - Không cần dependency ngoài cho validation cơ bản; validator có parser frontmatter tối giản tích hợp.
 - Có thể cài PyYAML riêng nếu workflow nội bộ của bạn cần parse YAML đầy đủ.
 
+## Cài skill Codex qua pip
+
+Dùng script cài đặt khi muốn đưa skill canonical vào thư mục skills của Codex thay vì chỉ copy adapter `AGENTS.md`. Script dùng `python -m pip install` với `--target` vào thư mục tạm, sau đó chạy installer để copy `SKILL.md` vào `$CODEX_HOME/skills/modular-research-doc-writer` hoặc `~/.codex/skills/modular-research-doc-writer`.
+
+```bash
+scripts/install-skill.sh
+OVERWRITE=1 scripts/install-skill.sh /path/to/codex/skills .
+```
+
+```powershell
+./scripts/install-skill.ps1
+./scripts/install-skill.ps1 "C:\codex\skills" . -Overwrite
+```
+
+Có thể thay đối số thứ hai bằng nguồn pip hợp lệ như `git+https://github.com/<owner>/<repo>.git`.
+
 ## Dùng với agent
 
 ### Codex

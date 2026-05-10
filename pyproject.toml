@@ -1,0 +1,25 @@
+[build-system]
+requires = []
+build-backend = "build_backend"
+backend-path = ["."]
+
+[project]
+name = "modular-research-doc-writer"
+version = "1.0.0"
+description = "Installable Codex skill package for ModularResearchDocWriter."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+  { name = "ModularResearchDocWriter maintainers" }
+]
+keywords = ["codex", "skill", "markdown", "research", "documentation"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+
+[project.scripts]
+mrm-skill-install = "modular_research_doc_writer.installer:main"
