@@ -42,6 +42,3 @@ mrm = "mrm.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["mrm"]
-
-[tool.hatch.build.targets.wheel.force-include]
-"mrm/resources/mrm-toolkit" = "mrm/resources/mrm-toolkit"
