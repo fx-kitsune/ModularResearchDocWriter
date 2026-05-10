@@ -10,7 +10,7 @@ import zipfile
 from pathlib import Path
 
 NAME = "modular-research-doc-writer"
-NORMALIZED = "modular_research_doc_writer"
+NORMALIZED = "mrm"
 VERSION = "1.0.0"
 DIST_INFO = f"{NORMALIZED}-{VERSION}.dist-info"
 WHEEL_NAME = f"{NORMALIZED}-{VERSION}-py3-none-any.whl"

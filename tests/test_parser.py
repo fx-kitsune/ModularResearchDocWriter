@@ -1,5 +1,5 @@
 import unittest
-from modular_research_doc_writer.core.validator import MRMValidator
+from mrm.core.validator import MRMValidator
 
 class TestMRMParser(unittest.TestCase):
     def setUp(self):

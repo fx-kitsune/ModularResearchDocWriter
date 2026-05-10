@@ -4,9 +4,9 @@ build-backend = "build_backend"
 backend-path = ["."]
 
 [project]
-name = "modular-research-doc-writer"
+name = "mrm"
 version = "1.0.0"
-description = "Installable Codex skill package for ModularResearchDocWriter."
+description = "Installable Codex skill package for mrm."
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT" }
@@ -22,5 +22,5 @@ classifiers = [
 ]
 
 [project.scripts]
-mrm = "modular_research_doc_writer.cli:main"
-mrm-skill-install = "modular_research_doc_writer.cli:main"
+mrm = "mrm.cli:main"
+mrm-skill-install = "mrm.cli:main"
