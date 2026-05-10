@@ -93,6 +93,18 @@ def _cmd_count_lines(args):
         return 1
 
 def main():
+    # Fix for Windows terminal encoding issues with emojis
+    if hasattr(sys.stdout, "reconfigure"):
+        try:
+            sys.stdout.reconfigure(encoding="utf-8")
+        except (AttributeError, TypeError):
+            pass
+    if hasattr(sys.stderr, "reconfigure"):
+        try:
+            sys.stderr.reconfigure(encoding="utf-8")
+        except (AttributeError, TypeError):
+            pass
+
     parser = argparse.ArgumentParser(description="MRM Toolkit — Unified CLI")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 

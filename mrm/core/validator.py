@@ -101,7 +101,7 @@ class MRMValidator:
     def count_content_lines(self, content: str) -> int:
         """Count content lines (excluding frontmatter, comments, excessive blank lines)."""
         _, body = self.extract_frontmatter(content)
-        lines = body.split("\n")
+        lines = body.strip().split("\n")
         content_lines: List[str] = []
         empty_count = 0
 

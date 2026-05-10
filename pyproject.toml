@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mrm-toolkit"
-version = "1.0.0"
+version = "1.0.1"
 description = "Toolkit hoàn chỉnh để module hóa nghiên cứu và tài liệu cho AI Agents."
 readme = "README.md"
 requires-python = ">=3.8"
